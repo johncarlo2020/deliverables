@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Filters\SelectFilter;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
-
+use Illuminate\Support\Facades\Auth;
 class DeliverablesResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Deliverables::class;
@@ -162,6 +162,19 @@ class DeliverablesResource extends Resource implements HasShieldPermissions
             //'create' => Pages\CreateDeliverables::route('/create'),
             //'edit' => Pages\EditDeliverables::route('/{record}/edit'),
         ];
-    }    
+    }  
+    
+    public static function getEloquentQuery(): Builder 
+    {
+        $query = parent::getEloquentQuery();
+
+        if (Auth::check() && Auth::user()->hasRole('admin')) {
+            // The user has the admin role
+        } else {
+                $query1->where('id', auth()->user()->id );
+           
+        }
+        return $query;
+    }
 
 }

@@ -115,7 +115,8 @@ class DeliverablesResource extends Resource implements HasShieldPermissions
                 ->attribute('status')
             ])
             ->actions([
-                Action::make('download')
+                Tables\Actions\ActionGroup::make([
+                    Action::make('download')
                     ->label('download')
                     ->color('secondary')
                     ->action(function ($record) {
@@ -141,6 +142,8 @@ class DeliverablesResource extends Resource implements HasShieldPermissions
                         ->modalSubheading('Are you sure want to reject this deliverable ?')
                         ->modalButton("Yes, I'm sure!"),
                 Tables\Actions\DeleteAction::make(),
+                ])
+                
 
             ])
             ->bulkActions([

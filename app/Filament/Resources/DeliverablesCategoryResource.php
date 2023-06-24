@@ -12,7 +12,6 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
 class DeliverablesCategoryResource extends Resource
 {
     protected static ?string $model = DeliverablesCategory::class;
@@ -28,6 +27,8 @@ class DeliverablesCategoryResource extends Resource
                 Forms\Components\TextInput::make('name')
                 ->required()
                 ->maxLength(255),
+                Forms\Components\DatePicker::make('deadline')
+                ->minDate(now()->addDays(1))
             ]);
     }
 
@@ -36,10 +37,7 @@ class DeliverablesCategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
+                Tables\Columns\TextColumn::make('deadline'),
             ])
             ->filters([
                 //

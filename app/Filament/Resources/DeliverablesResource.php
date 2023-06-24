@@ -79,7 +79,7 @@ class DeliverablesResource extends Resource implements HasShieldPermissions
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name'),
+                Tables\Columns\TextColumn::make('user.name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('category.name'),
                 Tables\Columns\TextColumn::make('description'),
                 Tables\Columns\BadgeColumn::make('created_at')
@@ -118,7 +118,8 @@ class DeliverablesResource extends Resource implements HasShieldPermissions
                 Tables\Actions\ActionGroup::make([
                     Action::make('download')
                     ->label('download')
-                    ->color('secondary')
+                    ->icon('heroicon-s-arrow-down')
+                    ->color('primary')
                     ->action(function ($record) {
                         if (Storage::disk('public')->exists($record->file)) {
                             return response()->download(public_path('storage/' . $record->file));
@@ -127,6 +128,7 @@ class DeliverablesResource extends Resource implements HasShieldPermissions
                 Tables\Actions\EditAction::make(),
                 Action::make('Approve')
                     ->label('Approve')
+                    ->icon('heroicon-s-check-circle')
                     ->color('success')
                     ->action(function ($record) {$record->update(['status' => '1']);})
                     ->requiresConfirmation()
@@ -135,6 +137,7 @@ class DeliverablesResource extends Resource implements HasShieldPermissions
                         ->modalButton("Yes, I'm sure!"),
                 Action::make('Reject')
                         ->label('Reject')
+                        ->icon('heroicon-s-x-circle')
                         ->color('danger')
                         ->action(function ($record) {$record->update(['status' => '2']);})
                         ->requiresConfirmation()
@@ -174,7 +177,7 @@ class DeliverablesResource extends Resource implements HasShieldPermissions
         if (Auth::check() && Auth::user()->hasRole('admin')) {
             // The user has the admin role
         } else {
-                $query1->where('id', auth()->user()->id );
+                $query->where('id', auth()->user()->id );
            
         }
         return $query;

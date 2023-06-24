@@ -68,6 +68,11 @@ class DeliverablesPolicy
         return $user->can('delete_deliverables');
     }
 
+    public function download(User $user)
+    {
+        return $user->can('download');
+    } 
+
     /**
      * Determine whether the user can bulk delete.
      *

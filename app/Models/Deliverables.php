@@ -19,6 +19,20 @@ class Deliverables extends Model
         'deliverables_category_id'
     ];
 
+    public function getStatusAttribute($value)
+    {
+        switch ($value) {
+            case 0:
+                return 'Pending';
+            case 1:
+                return 'Approved';
+            case 2:
+                return 'Rejected';
+            default:
+                return 'Unknown';
+        }
+    }
+
     public function deliverables()
     {
         return $this->hasMany(userCategory::class);

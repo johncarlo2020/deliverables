@@ -19,13 +19,30 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Filters\SelectFilter;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 
-class DeliverablesResource extends Resource
+class DeliverablesResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Deliverables::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?string $navigationGroup = 'deliverables';
+
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'download',
+            'accept',
+            'reject'
+        ];
+    }
 
     public static function form(Form $form): Form
     {
@@ -43,7 +60,6 @@ class DeliverablesResource extends Resource
                                     ->where('user_id',auth()->user()->id);
                             })->pluck('name','id')),
                 Forms\Components\TextInput::make('description')->columnSpan('full'),
-                
                 Forms\Components\Fieldset::make('School')
                             ->schema([
                                 Forms\Components\Select::make('semester_id')
@@ -65,16 +81,42 @@ class DeliverablesResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('user.name'),
                 Tables\Columns\TextColumn::make('category.name'),
-                Tables\Columns\TextColumn::make('description')
-
-
+                Tables\Columns\TextColumn::make('description'),
+                Tables\Columns\BadgeColumn::make('created_at')
+                ->label('Submisssion')
+                ->color(function ($record) {
+                    // dd($record->category->deadline)
+                    if($record->created_at <= $record->category->deadline){
+                        return 'success';
+                    }else{
+                        return 'danger';
+                    }
+                }
+                ),
+                Tables\Columns\BadgeColumn::make('status')
+                ->label('Status')
+                ->color(function ($record) {
+                    if($record->status == 'Pending'){
+                        return 'pending';
+                    }else if($record->status == 'Approved'){
+                        return 'success';
+                    }else{
+                        return 'danger';
+                    }
+                }),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                ->options([
+                    '0' => 'Pending',
+                    '1' => 'Approved',
+                    '2' => 'Rejected',
+                ])
+                ->attribute('status')
             ])
             ->actions([
-                Action::make('Turned_out')
-                    ->label('Download')
+                Action::make('download')
+                    ->label('download')
                     ->color('secondary')
                     ->action(function ($record) {
                         if (Storage::disk('public')->exists($record->file)) {
@@ -82,6 +124,24 @@ class DeliverablesResource extends Resource
                         }
                     }),
                 Tables\Actions\EditAction::make(),
+                Action::make('Approve')
+                    ->label('Approve')
+                    ->color('success')
+                    ->action(function ($record) {$record->update(['status' => '1']);})
+                    ->requiresConfirmation()
+                    ->modalHeading('Approve Deliverable')
+                        ->modalSubheading('Are you sure want to approve this deliverable ?')
+                        ->modalButton("Yes, I'm sure!"),
+                Action::make('Reject')
+                        ->label('Reject')
+                        ->color('danger')
+                        ->action(function ($record) {$record->update(['status' => '2']);})
+                        ->requiresConfirmation()
+                        ->modalHeading('Reject Deliverable')
+                        ->modalSubheading('Are you sure want to reject this deliverable ?')
+                        ->modalButton("Yes, I'm sure!"),
+                Tables\Actions\DeleteAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -103,4 +163,5 @@ class DeliverablesResource extends Resource
             //'edit' => Pages\EditDeliverables::route('/{record}/edit'),
         ];
     }    
+
 }

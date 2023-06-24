@@ -10,7 +10,7 @@ class DeliverablesCategory extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'name','deadline'
     ];
 
     public function categories()

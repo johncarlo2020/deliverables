@@ -22,7 +22,8 @@ class UserResource extends Resource
 
     protected static ?int $navigationSort = 9;
 
-    protected static ?string $navigationIcon = 'heroicon-o-lock-closed';
+    protected static ?string $navigationIcon = 'heroicon-o-user-circle';
+    
 
     protected static function getNavigationLabel(): string
     {
@@ -48,6 +49,7 @@ class UserResource extends Resource
     {
         return trans('filament-user::user.resource.title.resource');
     }
+   
 
     public static function form(Form $form): Form
     {
@@ -85,7 +87,7 @@ class UserResource extends Resource
                 TextColumn::make('id')->sortable()->label(trans('filament-user::user.resource.id')),
                 TextColumn::make('name')->sortable()->searchable()->label(trans('filament-user::user.resource.name')),
                 TextColumn::make('email')->sortable()->searchable()->label(trans('filament-user::user.resource.email')),
-                BooleanColumn::make('email_verified_at')->sortable()->searchable()->label(trans('filament-user::user.resource.email_verified_at')),
+                
                 Tables\Columns\TextColumn::make('created_at')->label(trans('filament-user::user.resource.created_at'))
                     ->dateTime('M j, Y')->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')->label(trans('filament-user::user.resource.updated_at'))

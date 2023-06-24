@@ -18,9 +18,10 @@ class SemesterResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Semester::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-chart-bar';
     
     protected static $permissionsCollection;
+    protected static ?string $navigationGroup = 'setup';
 
     public static function getPermissionPrefixes(): array
     {

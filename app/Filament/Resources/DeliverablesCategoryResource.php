@@ -17,7 +17,9 @@ class DeliverablesCategoryResource extends Resource
 {
     protected static ?string $model = DeliverablesCategory::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-book-open';
+    protected static ?string $navigationGroup = 'deliverables';
+    protected static ?string $navigationLabel = 'Categories';
 
     public static function form(Form $form): Form
     {

@@ -25,6 +25,7 @@ class DeliverablesResource extends Resource
     protected static ?string $model = Deliverables::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroup = 'deliverables';
 
     public static function form(Form $form): Form
     {

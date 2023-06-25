@@ -58,7 +58,10 @@ class DeliverablesResource extends Resource implements HasShieldPermissions
                                 $query->select('deliverables_category_id')
                                     ->from('user_categories')
                                     ->where('user_id',auth()->user()->id);
-                            })->pluck('name','id'))->required(),
+                            })->whereDoesntHave('deliverables', function ($query2) {
+                                $query2->where('user_id', auth()->user()->id );
+                            })->pluck('name','id'))
+                            ->required(),
                 Forms\Components\TextInput::make('description')->columnSpan('full')->required(),
                 Forms\Components\Fieldset::make('School')
                             ->schema([

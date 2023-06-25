@@ -132,6 +132,7 @@ class DeliverablesResource extends Resource implements HasShieldPermissions
                     ->color('success')
                     ->action(function ($record) {$record->update(['status' => '1']);})
                     ->requiresConfirmation()
+                    ->visible(fn (Deliverables $record): bool => Auth::user()->hasRole('admin'))
                     ->modalHeading('Approve Deliverable')
                         ->modalSubheading('Are you sure want to approve this deliverable ?')
                         ->modalButton("Yes, I'm sure!"),
@@ -141,6 +142,7 @@ class DeliverablesResource extends Resource implements HasShieldPermissions
                         ->color('danger')
                         ->action(function ($record) {$record->update(['status' => '2']);})
                         ->requiresConfirmation()
+                        ->visible(fn (Deliverables $record): bool => Auth::user()->hasRole('admin'))
                         ->modalHeading('Reject Deliverable')
                         ->modalSubheading('Are you sure want to reject this deliverable ?')
                         ->modalButton("Yes, I'm sure!"),

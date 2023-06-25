@@ -13,7 +13,7 @@ class DeliverablesCategory extends Model
         'name','deadline'
     ];
 
-    public function categories()
+    public function faculty()
     {
         return $this->HasMany(userCategory::class);
     }

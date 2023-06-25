@@ -10,10 +10,11 @@ use Filament\Tables;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Livewire\Component as Livewire;
 
 class UserRelationManager extends RelationManager
 {
-    protected static string $relationship = 'Faculty';
+    protected static string $relationship = 'Assign';
 
     protected static ?string $recordTitleAttribute = 'deliverables_categories_id';
     // protected static ?string $recordLabel = 'deliverablegories_id';
@@ -24,7 +25,20 @@ class UserRelationManager extends RelationManager
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->label('Faculty')
-                    ->options(User::all()->pluck('name', 'id'))
+                    ->options(function (callable $get, Livewire $livewire){
+                     
+                                        return User::whereNotIn('id',function($query) use ($livewire) {
+                                            $query->select('user_id')
+                                                    ->from('user_categories')
+                                                    ->where('deliverables_category_id',$livewire->ownerRecord->id);
+                                        })->pluck('name','id');
+                               
+                        })
+                    // ->options(User::whereIn('id',function($query, Livewire $livewire) {
+                    //     $query->select('user_id')
+                    //         ->from('user_categories')
+                    //         ->where('deliverables_category_id',$livewire->ownerRecord->id);
+                    // })->pluck('name','id'))
                     ->searchable(),
             ]);
     }

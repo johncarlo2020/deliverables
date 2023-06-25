@@ -51,25 +51,25 @@ class DeliverablesResource extends Resource implements HasShieldPermissions
                 Forms\Components\Hidden::make('user_id')
                     ->default(auth()->user()->id)
                     ->disabled(),
-                Forms\Components\FileUpload::make('file'),
+                Forms\Components\FileUpload::make('file')->required(),
                 Forms\Components\Select::make('deliverables_category_id')
                             ->label('Category')
-                            ->options(DeliverablesCategory::whereIn('id',function($query) {
+                            ->options(DeliverablesCategory::whereIn('id',function($query){
                                 $query->select('deliverables_category_id')
                                     ->from('user_categories')
                                     ->where('user_id',auth()->user()->id);
-                            })->pluck('name','id')),
-                Forms\Components\TextInput::make('description')->columnSpan('full'),
+                            })->pluck('name','id'))->required(),
+                Forms\Components\TextInput::make('description')->columnSpan('full')->required(),
                 Forms\Components\Fieldset::make('School')
                             ->schema([
                                 Forms\Components\Select::make('semester_id')
                                     ->label('Semester')
                                     ->options(Semester::all()->pluck('name', 'id'))
-                                    ->searchable(),
+                                    ->searchable()->required(),
                             Forms\Components\Select::make('school_year_id')
                                     ->label('School Year')
                                     ->options(SchoolYear::all()->pluck('name', 'id'))
-                                    ->searchable(),
+                                    ->searchable()->required(),
                             ])
                             ->columns(2)
             ]);

@@ -12,6 +12,9 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
+
+
 class DeliverablesCategoryResource extends Resource
 {
     protected static ?string $model = DeliverablesCategory::class;
@@ -68,4 +71,24 @@ class DeliverablesCategoryResource extends Resource
             'edit' => Pages\EditDeliverablesCategory::route('/{record}/edit'),
         ];
     }    
+
+    public static function getEloquentQuery(): Builder 
+    {
+        $query = parent::getEloquentQuery();
+
+        if (Auth::check() && Auth::user()->hasRole('admin')) {
+            // The user has the admin role
+        } else {
+            $query->whereHas('assign', function ($query1) {
+                $query1->where('user_id', auth()->user()->id );
+            });
+           
+        }
+        return $query;
+    }
+    // return User::whereNotIn('id',function($query) use ($livewire) {
+    //     $query->select('user_id')
+    //             ->from('user_categories')
+    //             ->where('deliverables_category_id',$livewire->ownerRecord->id);
+    // })
 }

@@ -47,13 +47,14 @@ class DownloadablesResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Action::make('Turned_out')
-                    ->label('Download')
-                    ->color('secondary')
-                    ->action(function ($record) {
-                        if (Storage::disk('public')->exists($record->file)) {
-                            return response()->download(public_path('storage/' . $record->file));
-                        }
+                Action::make('download')
+                ->label('download')
+                ->icon('heroicon-s-arrow-down')
+                ->color('primary')
+                ->action(function ($record) {
+                    if (Storage::disk('public')->exists($record->file)) {
+                        return response()->download(public_path('storage/' . $record->file));
+                    }
                     }),
                 
             ])

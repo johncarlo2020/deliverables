@@ -179,7 +179,7 @@ class DeliverablesResource extends Resource implements HasShieldPermissions
         if (Auth::check() && Auth::user()->hasRole('admin')) {
             // The user has the admin role
         } else {
-                $query->where('id', auth()->user()->id );
+                $query->where('user_id', auth()->user()->id );
            
         }
         return $query;

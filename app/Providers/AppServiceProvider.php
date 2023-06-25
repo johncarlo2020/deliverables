@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Filament\Facades\Filament;
-
+use Filament\Navigation\NavigationItem;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,5 +27,15 @@ class AppServiceProvider extends ServiceProvider
 
            ] 
            );
+
+           Filament::serving(function () {
+            Filament::registerNavigationItems([
+                NavigationItem::make('Messages')
+                    ->url('http://localhost/deliverables/public/chatify', shouldOpenInNewTab: true)
+                    ->icon('heroicon-o-presentation-chart-line')
+                    ->activeIcon('heroicon-s-presentation-chart-line')
+                    ->sort(3),
+            ]);
+        });
     }
 }

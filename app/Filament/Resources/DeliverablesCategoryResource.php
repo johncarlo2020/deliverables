@@ -82,6 +82,10 @@ class DeliverablesCategoryResource extends Resource
             $query->whereHas('assign', function ($query1) {
                 $query1->where('user_id', auth()->user()->id );
             });
+
+            $query->whereDoesntHave('deliverables', function ($query2) {
+                $query2->where('user_id', auth()->user()->id );
+            });
            
         }
         return $query;

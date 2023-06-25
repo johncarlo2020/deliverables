@@ -18,10 +18,16 @@ class DeliverablesCategory extends Model
         return $this->HasMany(userCategory::class);
     }
 
+    public function deliverables()
+    {
+        return $this->HasOne(Deliverables::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
 
     
 }

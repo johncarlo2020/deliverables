@@ -21,6 +21,7 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?int $navigationSort = 9;
+    protected static ?string $navigationGroup = 'account settings';
 
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
     
@@ -40,10 +41,10 @@ class UserResource extends Resource
         return trans('filament-user::user.resource.single');
     }
 
-    protected static function getNavigationGroup(): ?string
-    {
-        return config('filament-user.group');
-    }
+    // protected static function getNavigationGroup(): ?string
+    // {
+    //     return config('filament-user.group');
+    // }
 
     protected function getTitle(): string
     {
@@ -56,7 +57,7 @@ class UserResource extends Resource
         $rows = [
             TextInput::make('name')->required()->label(trans('filament-user::user.resource.name')),
             TextInput::make('email')->email()->required()->label(trans('filament-user::user.resource.email')),
-            Forms\Components\TextInput::make('password')->label(trans('filament-user::user.resource.password'))
+            Forms\Components\TextInput::make('password')->required()->label(trans('filament-user::user.resource.password'))
                 ->password()
                 ->maxLength(255)
                 ->dehydrateStateUsing(static function ($state) use ($form){
@@ -72,7 +73,7 @@ class UserResource extends Resource
         ];
 
         if(config('filament-user.shield')){
-            $rows[] = Forms\Components\MultiSelect::make('roles')->relationship('roles', 'name')->label(trans('filament-user::user.resource.roles'));
+            $rows[] = Forms\Components\MultiSelect::make('roles')->relationship('roles', 'name')->required()->label(trans('filament-user::user.resource.roles'));
         }
 
         $form->schema($rows);
@@ -95,12 +96,7 @@ class UserResource extends Resource
 
             ])
             ->filters([
-                Tables\Filters\Filter::make('verified')
-                    ->label(trans('filament-user::user.resource.verified'))
-                    ->query(fn (Builder $query): Builder => $query->whereNotNull('email_verified_at')),
-                Tables\Filters\Filter::make('unverified')
-                    ->label(trans('filament-user::user.resource.unverified'))
-                    ->query(fn (Builder $query): Builder => $query->whereNull('email_verified_at')),
+                
             ]);
 
         if(config('filament-user.impersonate')){

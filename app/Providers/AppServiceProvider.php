@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Filament::registerNavigationGroups(
            [
-            'deliverables','setup','timex','filament shield', 'settings'
+            'deliverables','setup','Schedules','filament shield', 'settings'
 
            ] 
            );

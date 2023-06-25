@@ -32,6 +32,7 @@ class DeliverablesCategoryResource extends Resource
                 ->maxLength(255),
                 Forms\Components\DatePicker::make('deadline')
                 ->minDate(now()->addDays(1))
+                ->required()
             ]);
     }
 

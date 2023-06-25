@@ -63,7 +63,7 @@ return [
     'pages' => [
         'timex' => \Buildix\Timex\Pages\Timex::class,
         'slug' => 'timex',
-        'group' => 'timex',
+        'group' => 'Schedules',
         'sort' => 0,
         'shouldRegisterNavigation' => true,
         'enablePolicy' => false,

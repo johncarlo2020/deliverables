@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
            Filament::serving(function () {
             Filament::registerNavigationItems([
                 NavigationItem::make('Messages')
-                    ->url('http://154.41.251.234//deliverables/public/chatify', shouldOpenInNewTab: true)
+                    ->url('http://154.41.251.234/deliverables/public/chatify', shouldOpenInNewTab: true)
                     ->icon('heroicon-o-presentation-chart-line')
                     ->activeIcon('heroicon-s-presentation-chart-line')
                     ->sort(3),

@@ -48,8 +48,8 @@ return [
     ],
 
     'entities' => [
-        'pages' => true,
-        'widgets' => true,
+        'pages' => FALSE,
+        'widgets' => FALSE,
         'resources' => true,
         'custom_permissions' => false,
     ],

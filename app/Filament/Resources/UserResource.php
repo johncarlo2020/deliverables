@@ -99,11 +99,6 @@ class UserResource extends Resource
                 
             ]);
 
-        if(config('filament-user.impersonate')){
-            $table->prependActions([
-                Impersonate::make('impersonate'),
-            ]);
-        }
 
         return $table;
     }

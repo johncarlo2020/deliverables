@@ -13,4 +13,6 @@ class ListUsers extends ListRecords
     {
         return trans('filament-user::user.resource.title.list');
     }
+
+    
 }

@@ -14,6 +14,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\BooleanColumn;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\RelationManagers;
+
 use STS\FilamentImpersonate\Impersonate;
 
 class UserResource extends Resource
@@ -103,12 +105,25 @@ class UserResource extends Resource
         return $table;
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\DeliverablesRelationManager::class,
+            
+        ];
+    }
+
+    
+
+
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
+            'view' => Pages\ViewUser::route('/{record}'),
         ];
     }
 }

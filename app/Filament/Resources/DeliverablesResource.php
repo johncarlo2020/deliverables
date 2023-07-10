@@ -83,8 +83,8 @@ class DeliverablesResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('category.name'),
-                Tables\Columns\TextColumn::make('description'),
+                Tables\Columns\TextColumn::make('category.name')->searchable(),
+                Tables\Columns\TextColumn::make('description')->searchable(),
                 Tables\Columns\BadgeColumn::make('created_at')
                 ->label('Submisssion')
                 ->color(function ($record) {
